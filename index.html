@@ -71,8 +71,7 @@ function load() {
     if(!Array.isArray(data)) data=[];
     var total=0;
     data.forEach(function(e){
-      total += e.type==="income" ? parseFloat(e.amount) : -parseFloat(e.amount);
-    });
+      total += e.type==="income" ? parseFloat(e.amount) : -parseFloat(e.amount); });
     document.getElementById("total").textContent = "$"+total.toFixed(2);
     document.getElementById("total").style.color = total>=0 ? "#2ecc71" : "#e74c3c";
     document.getElementById("status").textContent = "";
@@ -117,3 +116,4 @@ load();
 </script>
 </body>
 </html>
+
