@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,
+  initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Arial,sans-serif;background:#f0f2f5;paddi
+  ng:20px}
+  .container{max-width:600px;margin:0 auto}
+  h1{text-align:center;color:#333;margin-bottom:20px}
+  .card{background:white;border-radius:12px;padding:20px;mar
+  gin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+  .balance{text-align:center}
+  .balance
+  h2{color:#888;font-size:14px;text-transform:uppercase}
+  .amount{font-size:42px;font-weight:bold;color:#2ecc71}
+  input,select,button{width:100%;padding:12px;margin-bottom:
+  10px;border-radius:8px;border:1px solid
+  #ddd;font-size:16px}
+  button{background:#3498db;color:white;border:none;cursor:p
+  ointer;font-weight:bold}
+  .expense-item{display:flex;justify-content:space-between;a
+  lign-items:center;padding:12px;border-bottom:1px solid
+  #f0f0f0}
+  .expense-name{font-weight:bold;color:#333}
+  .expense-meta{font-size:12px;color:#888}
+  .expense-amount{color:#e74c3c;font-weight:bold;font-size:1
+  8px}
+  .income-amount{color:#2ecc71;font-weight:bold;font-size:18
+  px}
+  .delete-btn{background:none;border:none;color:#ccc;cursor:
+  pointer;font-size:18px;width:auto;padding:0 8px;margin:0}
+  .empty{text-align:center;color:#aaa;padding:20px}
+  .status{text-align:center;font-size:12px;color:#aaa;margin
+  -bottom:10px}
+  </style>
+  </head>
+  <body>
+  <div class="container">
+  <h1>Expense Tracker</h1>
+  <div class="card balance">
+  <h2>Balance</h2>
+  <div class="amount" id="total">$0.00</div>
+  </div>
+  <div class="card">
+  <input type="text" id="name" placeholder="Description">
+  <input type="number" id="amount" placeholder="Amount"
+  min="0" step="0.01">
+  <input type="date" id="date">
+  <select id="category">
+  <option value="Food">Food</option>
+  <option value="Transport">Transport</option>
+  <option value="Shopping">Shopping</option>
+  <option value="Bills">Bills</option>
+  <option value="Income">Income</option>
+  <option value="Other">Other</option>
+  </select>
+  <select id="type">
+  <option value="expense">Expense</option>
+  <option value="income">Income</option>
+  </select>
+  <button onclick="addExpense()">Add</button>
+  </div>
+  <div class="card">
+  <h3
+  style="margin-bottom:15px;color:#333">Transactions</h3>
+  <p class="status" id="status">Loading...</p>
+  <div id="list"></div>
+  </div>
+  </div>
+  <script>
+  var BASE = "https://rgfdtihmtxrtquodyqhv.supabase.co/rest/
+  v1/expenses";
+  var KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOi
+  JzdXBhYmFzZSIsInJlZiI6InJnZmR0aWhtdHhydHF1b2R5cWh2Iiwicm9s
+  ZSI6ImFub24iLCJpYXQiOjE3NzMyODY3MzAsImV4cCI6MjA4ODg2MjczMH
+  0.7hixzEx2NwhKH0f2obdbNG1d1kfUMuZQhrnxNkM_B7k";
+  var H = {"Content-Type":"application/json","apikey":KEY,"A
+  uthorization":"Bearer "+KEY};
+
+  document.getElementById("date").valueAsDate = new Date();
+
+  function load() {
+    fetch(BASE+"?order=id.desc", {headers:H})
+    .then(function(r){return r.json()})
+    .then(function(data){
+      if(!Array.isArray(data)) data=[];
+      var total=0;
+      data.forEach(function(e){
+        total += e.type==="income" ? parseFloat(e.amount) :
+  -parseFloat(e.amount);
+      });
+      document.getElementById("total").textContent =
+  "$"+total.toFixed(2);
+      document.getElementById("total").style.color =
+  total>=0 ? "#2ecc71" : "#e74c3c";
+      document.getElementById("status").textContent = "";
+      if(data.length===0){
+        document.getElementById("list").innerHTML="<p
+  class='empty'>No transactions yet.</p>";
+        return;
+      }
+      var html="";
+      data.forEach(function(e){
+        var d=e.date?e.date.split("-"):["","",""];
+        var fd=d[1]+"/"+d[2]+"/"+d[0];
+        var
+  cls=e.type==="income"?"income-amount":"expense-amount";
+        var sign=e.type==="income"?"+":"-";
+        html+="<div class='expense-item'><div><div
+  class='expense-name'>"+e.name+"</div><div
+  class='expense-meta'>"+e.category+" -
+  "+fd+"</div></div><div
+  style='display:flex;align-items:center;gap:10px'><span
+  class='"+cls+"'>"+sign+"$"+parseFloat(e.amount).toFixed(2)
+  +"</span><button class='delete-btn'
+  onclick='del("+e.id+")'>x</button></div></div>";
+      });
+      document.getElementById("list").innerHTML=html;
+    })
+    .catch(function(){
+      document.getElementById("status").textContent="Error
+  loading data.";
+    });
+  }
+
+  function addExpense() {
+    var name=document.getElementById("name").value.trim();
+    var amount=parseFloat(document.getElementById("amount").
+  value);
+    var date=document.getElementById("date").value;
+    var category=document.getElementById("category").value;
+    var type=document.getElementById("type").value;
+    if(!name||isNaN(amount)||amount<=0||!date){alert("Please
+   fill in all fields.");return;}
+
+  document.getElementById("status").textContent="Saving...";
+    fetch(BASE,{method:"POST",headers:H,body:JSON.stringify(
+  {name:name,amount:amount,date:date,category:category,type:
+  type})})
+    .then(function(){load();});
+  }
+
+  function del(id) {
+
+  document.getElementById("status").textContent="Saving...";
+    fetch(BASE+"?id=eq."+id,{method:"DELETE",headers:H})
+    .then(function(){load();});
+  }
+
+  load();
+  </script>
+  </body>
+  </html>
