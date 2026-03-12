@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
   <html lang="en">
   <head>
-    <meta charset="UTF-8">markb-commits/expense-tracker
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
     <style>
@@ -40,12 +40,10 @@
   <body>
     <div class="container">
       <h1>Expense Tracker</h1>
-
       <div class="card balance">
         <h2>Total Spent</h2>
         <div class="amount" id="total">$0.00</div>
       </div>
-
       <div class="card">
         <input type="text" id="name" placeholder="Expense name (e.g.
   Coffee)">
@@ -61,7 +59,6 @@
         </select>
         <button onclick="addExpense()">Add Expense</button>
       </div>
-
       <div class="card">
         <h3 style="margin-bottom:15px; color:#333;">Expenses</h3>
         <p class="status" id="status">Loading...</p>
@@ -70,8 +67,9 @@
     </div>
 
     <script>
-      const API_KEY = 'YOUR_API_KEY';
-      const BIN_ID = 'YOUR_BIN_ID';
+      const API_KEY =
+  '$2a$10$BCkIKeumFUJMQGhs0u7PJeNepzzbAy1uMgs7beUUbFlFVSFWHoI7q';
+      const BIN_ID = '69b2367ac3097a1dd51aa28e';
       const URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
       let expenses = [];
