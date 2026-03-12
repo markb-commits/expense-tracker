@@ -1,170 +1,130 @@
  <!DOCTYPE html>
   <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font-family: Arial, sans-serif; background: #f0f2f5; padding:
-  20px; }
-      .container { max-width: 600px; margin: 0 auto; }
-      h1 { text-align: center; color: #333; margin-bottom: 20px; }
-      .card { background: white; border-radius: 12px; padding: 20px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 20px;
+   }
+  .container { max-width: 600px; margin: 0 auto; }
+  h1 { text-align: center; color: #333; margin-bottom: 20px; }
+  .card { background: white; border-radius: 12px; padding: 20px;
   margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-      .balance { text-align: center; }
-      .balance h2 { color: #888; font-size: 14px; text-transform: uppercase;
-   }
-      .balance .amount { font-size: 42px; font-weight: bold; color: #2ecc71;
-   }
-      input, select, button { width: 100%; padding: 12px; margin-bottom:
-  10px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
-      button { background: #3498db; color: white; border: none; cursor:
-  pointer; font-weight: bold; }
-      button:hover { background: #2980b9; }
-      .expense-item { display: flex; justify-content: space-between;
+  .balance { text-align: center; }
+  .balance h2 { color: #888; font-size: 14px; text-transform: uppercase; }
+  .balance .amount { font-size: 42px; font-weight: bold; color: #2ecc71; }
+  input, select, button { width: 100%; padding: 12px; margin-bottom: 10px;
+  border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
+  button { background: #3498db; color: white; border: none; cursor: pointer;
+   font-weight: bold; }
+  button:hover { background: #2980b9; }
+  .expense-item { display: flex; justify-content: space-between;
   align-items: center; padding: 12px; border-bottom: 1px solid #f0f0f0; }
-      .expense-item:last-child { border-bottom: none; }
-      .expense-name { font-weight: bold; color: #333; }
-      .expense-meta { font-size: 12px; color: #888; }
-      .expense-amount { color: #e74c3c; font-weight: bold; font-size: 18px;
-  }
-      .delete-btn { background: none; border: none; color: #ccc; cursor:
+  .expense-item:last-child { border-bottom: none; }
+  .expense-name { font-weight: bold; color: #333; }
+  .expense-meta { font-size: 12px; color: #888; }
+  .expense-amount { color: #e74c3c; font-weight: bold; font-size: 18px; }
+  .delete-btn { background: none; border: none; color: #ccc; cursor:
   pointer; font-size: 18px; width: auto; padding: 0 8px; margin: 0; }
-      .delete-btn:hover { color: #e74c3c; background: none; }
-      .empty { text-align: center; color: #aaa; padding: 20px; }
-      .status { text-align: center; font-size: 12px; color: #aaa;
-  margin-bottom: 10px; }
-    </style>
+  .delete-btn:hover { color: #e74c3c; background: none; }
+  .empty { text-align: center; color: #aaa; padding: 20px; }
+  .status { text-align: center; font-size: 12px; color: #aaa; margin-bottom:
+   10px; }
+  </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Expense Tracker</h1>
-      <div class="card balance">
-        <h2>Total Spent</h2>
-        <div class="amount" id="total">$0.00</div>
-      </div>
-      <div class="card">
-        <input type="text" id="name" placeholder="Expense name (e.g.
-  Coffee)">
-        <input type="number" id="amount" placeholder="Amount (e.g. 4.50)"
-  min="0" step="0.01">
-        <input type="date" id="date">
-        <select id="category">
-          <option value="Food">Food</option>
-          <option value="Transport">Transport</option>
-          <option value="Shopping">Shopping</option>
-          <option value="Bills">Bills</option>
-          <option value="Other">Other</option>
-        </select>
-        <button onclick="addExpense()">Add Expense</button>
-      </div>
-      <div class="card">
-        <h3 style="margin-bottom:15px; color:#333;">Expenses</h3>
-        <p class="status" id="status">Loading...</p>
-        <div id="list"></div>
-      </div>
-    </div>
-
-    <script>
-      const API_KEY =
+  <div class="container">
+  <h1>Expense Tracker</h1>
+  <div class="card balance">
+  <h2>Total Spent</h2>
+  <div class="amount" id="total">$0.00</div>
+  </div>
+  <div class="card">
+  <input type="text" id="name" placeholder="Expense name (e.g. Coffee)">
+  <input type="number" id="amount" placeholder="Amount (e.g. 4.50)" min="0"
+  step="0.01">
+  <input type="date" id="date">
+  <select id="category">
+  <option value="Food">Food</option>
+  <option value="Transport">Transport</option>
+  <option value="Shopping">Shopping</option>
+  <option value="Bills">Bills</option>
+  <option value="Other">Other</option>
+  </select>
+  <button onclick="addExpense()">Add Expense</button>
+  </div>
+  <div class="card">
+  <h3 style="margin-bottom:15px; color:#333;">Expenses</h3>
+  <p class="status" id="status">Loading...</p>
+  <div id="list"></div>
+  </div>
+  </div>
+  <script>
+  const API_KEY =
   '$2a$10$BCkIKeumFUJMQGhs0u7PJeNepzzbAy1uMgs7beUUbFlFVSFWHoI7q';
-      const BIN_ID = '69b2367ac3097a1dd51aa28e';
-      const URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
-
-      let expenses = [];
-
-      document.getElementById('date').valueAsDate = new Date();
-
-      async function load() {
-        try {
-          const res = await fetch(URL, {
-            headers: { 'X-Master-Key': API_KEY }
-          });
-          const data = await res.json();
-          expenses = data.record.expenses || [];
-          render();
-        } catch (e) {
-          document.getElementById('status').textContent = 'Error loading
-  data.';
-        }
-      }
-
-      async function save() {
-        await fetch(URL, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': API_KEY
-          },
-          body: JSON.stringify({ expenses })
-        });
-      }
-
-      function formatDate(dateStr) {
-        const [year, month, day] = dateStr.split('-');
-        return `${month}/${day}/${year}`;
-      }
-
-      function render() {
-        const list = document.getElementById('list');
-        const total = expenses.reduce((sum, e) => sum + e.amount, 0);
-        document.getElementById('total').textContent = '$' +
-  total.toFixed(2);
-        document.getElementById('status').textContent = '';
-
-        if (expenses.length === 0) {
-          list.innerHTML = '<p class="empty">No expenses yet.</p>';
-          return;
-        }
-
-        list.innerHTML = expenses.map((e, i) => `
-          <div class="expense-item">
-            <div>
-              <div class="expense-name">${e.name}</div>
-              <div class="expense-meta">${e.category} &bull;
-  ${formatDate(e.date)}</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span class="expense-amount">-$${e.amount.toFixed(2)}</span>
-              <button class="delete-btn"
-  onclick="deleteExpense(${i})">✕</button>
-            </div>
-          </div>
-        `).join('');
-      }
-
-      async function addExpense() {
-        const name = document.getElementById('name').value.trim();
-        const amount = parseFloat(document.getElementById('amount').value);
-        const date = document.getElementById('date').value;
-        const category = document.getElementById('category').value;
-
-        if (!name || isNaN(amount) || amount <= 0 || !date) {
-          alert('Please fill in all fields.');
-          return;
-        }
-
-        expenses.push({ name, amount, date, category });
-        document.getElementById('status').textContent = 'Saving...';
-        await save();
-        document.getElementById('status').textContent = '';
-        render();
-
-        document.getElementById('name').value = '';
-        document.getElementById('amount').value = '';
-        document.getElementById('date').valueAsDate = new Date();
-      }
-
-      async function deleteExpense(i) {
-        expenses.splice(i, 1);
-        document.getElementById('status').textContent = 'Saving...';
-        await save();
-        document.getElementById('status').textContent = '';
-        render();
-      }
-
-      load();
-    </script>
+  const BIN_ID = '69b2367ac3097a1dd51aa28e';
+  const URL = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+  let expenses = [];
+  document.getElementById('date').valueAsDate = new Date();
+  async function load() {
+  try {
+  const res = await fetch(URL, { headers: { 'X-Master-Key': API_KEY } });
+  const data = await res.json();
+  expenses = data.record.expenses || [];
+  render();
+  } catch(e) {
+  document.getElementById('status').textContent = 'Error loading data.';
+  }
+  }
+  async function save() {
+  await fetch(URL, { method: 'PUT', headers: { 'Content-Type':
+  'application/json', 'X-Master-Key': API_KEY }, body: JSON.stringify({
+  expenses }) });
+  }
+  function formatDate(d) { const [y,m,day] = d.split('-'); return
+  m+'/'+day+'/'+y; }
+  function render() {
+  const list = document.getElementById('list');
+  const total = expenses.reduce((s,e) => s+e.amount, 0);
+  document.getElementById('total').textContent = '$' + total.toFixed(2);
+  document.getElementById('status').textContent = '';
+  if (expenses.length === 0) { list.innerHTML = '<p class="empty">No
+  expenses yet.</p>'; return; }
+  list.innerHTML = expenses.map((e,i) => '<div
+  class="expense-item"><div><div class="expense-name">'+e.name+'</div><div
+  class="expense-meta">'+e.category+' &bull;
+  '+formatDate(e.date)+'</div></div><div
+  style="display:flex;align-items:center;gap:10px;"><span
+  class="expense-amount">-$'+e.amount.toFixed(2)+'</span><button
+  class="delete-btn"
+  onclick="deleteExpense('+i+')">&#x2715;</button></div></div>').join('');
+  }
+  async function addExpense() {
+  const name = document.getElementById('name').value.trim();
+  const amount = parseFloat(document.getElementById('amount').value);
+  const date = document.getElementById('date').value;
+  const category = document.getElementById('category').value;
+  if (!name || isNaN(amount) || amount <= 0 || !date) { alert('Please fill
+  in all fields.'); return; }
+  expenses.push({ name, amount, date, category });
+  document.getElementById('status').textContent = 'Saving...';
+  await save();
+  document.getElementById('status').textContent = '';
+  render();
+  document.getElementById('name').value = '';
+  document.getElementById('amount').value = '';
+  document.getElementById('date').valueAsDate = new Date();
+  }
+  async function deleteExpense(i) {
+  expenses.splice(i, 1);
+  document.getElementById('status').textContent = 'Saving...';
+  await save();
+  document.getElementById('status').textContent = '';
+  render();
+  }
+  load();
+  </script>
   </body>
   </html>
